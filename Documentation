@@ -46,6 +46,10 @@ C89/C90 standard (ISO/IEC 9899:1990):
 See also
 C++ documentation for C++ Standard Library header files
 
+ricorda di fare free memory!!!!!!!!!!!!!!!!!
+metti nell'ordine giusto le cose
+le strighe si comparano con srtcpy
+
 
 
 #include <stdio.h>
