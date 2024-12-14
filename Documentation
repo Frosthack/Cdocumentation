@@ -470,6 +470,7 @@ Un altro esempio potrebbe essere la gestione di uno stock di prodotti in un maga
 ### Conclusione
 Questa guida ha coperto in dettaglio l'implementazione della ricerca binaria e del Selection Sort su array di struct in C, includendo scenari reali per applicazioni pratiche. Con queste conoscenze, dovresti essere in grado di programmare applicazioni complesse che richiedono la gestione, l'ordinamento e la ricerca di dati strutturati.
 
+PROGRAMMA STUDENTI
 
 #include <stdio.h>
 #include <stdlib.h>
