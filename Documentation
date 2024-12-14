@@ -471,6 +471,140 @@ Un altro esempio potrebbe essere la gestione di uno stock di prodotti in un maga
 Questa guida ha coperto in dettaglio l'implementazione della ricerca binaria e del Selection Sort su array di struct in C, includendo scenari reali per applicazioni pratiche. Con queste conoscenze, dovresti essere in grado di programmare applicazioni complesse che richiedono la gestione, l'ordinamento e la ricerca di dati strutturati.
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define MAXMATRICOLA 9
+#define MAXNOME 10
+#define MAXCOGNOME 30
+
+typedef struct {
+    char matricola[MAXMATRICOLA];
+    char nome[MAXNOME];
+    char cognome[MAXCOGNOME];
+    int esami;
+} studente;
+
+typedef struct {
+    char matricola[MAXMATRICOLA];
+    int esami;
+    bool media;
+} studentemedia;
+
+void lettura(studente *s, int dim) {
+    for (int i = 0; i < dim; i++) {
+        printf("Matricola: ");
+        fgets((s + i)->matricola, MAXMATRICOLA, stdin);
+        (s + i)->matricola[strcspn((s + i)->matricola, "\n")] = '\0';
+
+        printf("Nome: ");
+        fgets((s + i)->nome, MAXNOME, stdin);
+        (s + i)->nome[strcspn((s + i)->nome, "\n")] = '\0';
+
+        printf("Cognome: ");
+        fgets((s + i)->cognome, MAXCOGNOME, stdin);
+        (s + i)->cognome[strcspn((s + i)->cognome, "\n")] = '\0';
+
+        printf("Esami sostenuti: ");
+        scanf("%d", &(s + i)->esami);
+        while (getchar() != '\n'); // Pulizia del buffer di input
+
+        printf("Studente n.%d aggiunto!\n", i + 1);
+    }
+}
+
+void media(studente *s, int dim) {
+    int somma = 0;
+    for (int i = 0; i < dim; i++) {
+        somma += (s + i)->esami;
+    }
+    int media = somma / dim;
+
+    // Allocazione dinamica del vettore studentemedia
+    studentemedia *smedia = malloc(dim * sizeof(studentemedia));
+    if (smedia == NULL) {
+        fprintf(stderr, "Errore di allocazione della memoria\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Copia dei dati degli studenti nel vettore studentemedia
+    for (int i = 0; i < dim; i++) {
+        strcpy(smedia[i].matricola, s[i].matricola);
+        smedia[i].esami = s[i].esami;
+    }
+
+    // Verifica se gli studenti hanno sostenuto un numero di esami superiore alla media
+    for (int i = 0; i < dim; i++) {
+        smedia[i].media = (smedia[i].esami > media);
+        printf("%s\t\t %s\n", smedia[i].matricola, smedia[i].media ? "true" : "false");
+    }
+
+    free(smedia);
+}
+
+void stampa(studente *s, int dim) {
+    printf("MATRICOLA\tNOME\tCOGNOME\tNUMERO ESAMI SOSTENUTI\n");
+    for (int i = 0; i < dim; i++) {
+        printf("%s\t%s\t%s\t%d\n", (s + i)->matricola, (s + i)->nome, (s + i)->cognome, (s + i)->esami);
+    }
+}
+
+int ricerca_binaria(studente arr[], int dim, char *matricola) {
+    int primo = 0;
+    int ultimo = dim - 1;
+
+    while (primo <= ultimo) {
+        int medio = (primo + ultimo) / 2;
+        int cmp = strcmp(arr[medio].matricola, matricola);
+
+        if (cmp == 0) {
+            return medio; // Trovato
+        } else if (cmp < 0) {
+            primo = medio + 1; // Cerca a destra
+        } else {
+            ultimo = medio - 1; // Cerca a sinistra
+        }
+    }
+
+    return -1; // Non trovato
+}
+
+int main() {
+    int dim;
+    printf("Quanti studenti vuoi aggiungere?\n");
+    scanf("%d", &dim);
+    while (getchar() != '\n'); // Pulizia del buffer di input
+
+    studente *s = malloc(dim * sizeof(studente));
+    if (s == NULL) {
+        fprintf(stderr, "Errore di allocazione della memoria\n");
+        exit(EXIT_FAILURE);
+    }
+
+    lettura(s, dim);
+    stampa(s, dim);
+
+    printf("----------------------\n");
+    printf("Lo studente è sopra la media?\n");
+    media(s, dim);
+
+    char matricola[MAXMATRICOLA];
+    printf("Inserisci la matricola dello studente da cercare: ");
+    fgets(matricola, MAXMATRICOLA, stdin);
+    matricola[strcspn(matricola, "\n")] = '\0';
+
+    int posizione = ricerca_binaria(s, dim, matricola);
+    if (posizione != -1) {
+        printf("Studente trovato alla posizione %d.\n", posizione);
+    } else {
+        printf("Studente non trovato.\n");
+    }
+
+    free(s); // Libera la memoria allocata
+    return 0;
+}
 
 
 
