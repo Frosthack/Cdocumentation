@@ -609,6 +609,30 @@ int main() {
 
 
 
+NUMERI PSEUDOCAUSALI 
+//GENERA 10 NUMERI CHE OGNUNO VALE MINIMO 20 E MASSIMO 100
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Funzione per generare un numero casuale nell'intervallo [min, max]
+int randomInRange(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+int main(void) {
+    srand(time(NULL)); // Usa il tempo corrente come seme per il generatore di numeri casuali
+    
+    // Genera e stampa 10 numeri casuali nell'intervallo [20, 100]
+    for (int n = 0; n < 10; ++n) {
+        int random_number = randomInRange(20, 100);
+        printf("%d ", random_number);
+    }
+    
+    printf("\n");
+    return 0;
+}
 
 
 
