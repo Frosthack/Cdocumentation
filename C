@@ -636,6 +636,15 @@ int main(void) {
 
 
 
-
+void inserimento(articoli **a, int *dim, int posizione, const char *nome){
+    *a = realloc(*a, (*dim + 1) * sizeof(articoli));
+    if (*a == NULL) {
+        perror("Errore nella reallocazione della memoria");
+        exit(EXIT_FAILURE);
+    }
+    memmove(*a + posizione + 1, *a + posizione, (*dim - posizione) * sizeof(articoli));
+    strcpy((*a)[posizione].nome, nome);
+    (*dim)++;
+}
 
 
